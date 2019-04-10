@@ -16,10 +16,7 @@
             <li class="header__modules__menu__container__list__item"><a href="#">a</a></li>
             <li class="header__modules__menu__container__list__item"><a href="#">a</a></li>
             <li class="header__modules__menu__container__list__item"><a href="#">a</a></li>
-            <li class="header__modules__menu__container__list__item" *ngIf="!authService.loggedIn()"><a class="btn btn-primary" [routerLink]="['/login']">{{ this.appLiterals.btnLogin }}</a></li>
-            <li *ngIf="authService.loggedIn()" class="header__modules__menu__container__list__item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
-              <a class="nav-link" (click)="this.onLogoutClick()" href="#">{{ this.appLiterals.menu.logout }}</a>
-            </li>
+            <li class="header__modules__menu__container__list__item"><a class="btn btn-primary" [routerLink]="['/sign-in']">{{ this.appLiterals.btnLogin }}</a></li>
           </ul>
         </nav>
       </div>
@@ -39,7 +36,8 @@
 
         <div class="header__hero__article__register">
           <h2 class="header__hero__article__register__title">Registrate Gratis!</h2>
-          <app-register></app-register>
+          <!-- <app-register></app-register> -->
+          <app-sign-up></app-sign-up>
           <!--<form action="">
             <label for="names" class="header__hero__article__register_label">Apellido y Nombre</label>
             <input type="text" name="user" placeholder="Apellido y Nombre" class="header__hero__article__register_input">

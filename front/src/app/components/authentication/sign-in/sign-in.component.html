@@ -1,0 +1,50 @@
+<div class="container">
+  <div class="row mb-3">
+    <div class="col-md-12">
+      <h2>{{ appLiterals.login.loginTitle }}</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row mb-3 mt-2">
+        <h5>{{ this.appLiterals.user.account }}</h5>
+      </div>
+      <div class="row mb-5">
+        <div class="col-md-8">
+          <form (submit)="authService.SignIn(userName.value, userPassword.value)" class="form-group">
+
+              <div class="form-group">
+                <label>{{ appLiterals.user.email }}</label>
+                <input type="text" class="form-control" #userName required>
+              </div>
+
+              <div class="form-group">
+                <label>{{ appLiterals.user.password }}</label>
+                <input type="password" class="form-control" #userPassword required>
+              </div>
+
+              <div class="form-group">
+                <button type="submit" class="btn btn-primary">{{ this.appLiterals.btnLogin }}</button>
+              </div>
+              
+              <!-- Calling GoogleAuth Api from AuthService -->
+              <div class="form-group">
+                <button type="button" class="loginBtn loginBtn--google" (click)="authService.GoogleAuth()">
+                  Inicia sesión con Google
+                </button>
+              </div>  
+
+              <div class="form-group mt-4">
+                <a routerLink="/forgot-password">Olvidó la contraseña?</a>
+              </div>
+
+              <div>
+                <span>No tiene una cuenta?<a routerLink="/register-user"> Registrarse</a></span>
+              </div>
+
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

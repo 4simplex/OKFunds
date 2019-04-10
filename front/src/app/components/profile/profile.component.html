@@ -1,23 +1,35 @@
-<div *ngIf="user" class="container">
-  <div class="row mb-3">
-    <div class="col-md-12">
-      <h2>{{ appLiterals.user.profile }}</h2>
-    </div>
-  </div>
+
+<!-- Sidebar navigation -->
+<div class="container-fluid">
   <div class="row">
-    <div class="col-md-12">
-      <div class="row mb-3 mt-2">
-        <h5>{{ user.name }}</h5>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <ul class="list-group">
-            <li class="list-group-item"> <strong>{{ appLiterals.user.username }}: </strong> {{user.username}}</li>
-            <li class="list-group-item"> <strong>{{ appLiterals.user.email }}: </strong> {{user.email}}</li>
-            <li class="list-group-item"> <strong>{{ appLiterals.user.createdDate }}: </strong> {{user.createdDate | date:'full':'GMT-3':'es-AR'}}</li>
-          </ul>
+
+   
+
+    <!-- Main content -->
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+      <div class="inner-adjust">
+
+        <div class="pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">User Profile</h1>
         </div>
+        <!-- Show user data when logged in -->
+        <div class="row" *ngIf="authService.userData as user">
+          <div class="col-md-12">
+            <div class="media">
+              <img class="align-self-start mr-5 thumbnail rounded-circle" src="{{(user.photoURL) ? user.photoURL : '/assets/dummy-user.png'}}"
+                alt="{{user.displayName}}">
+              <div class="media-body">
+                <h1>Hello: <strong>{{(user.displayName) ? user.displayName : 'User'}}</strong></h1>
+                <p>User ID: <strong>{{user.uid}}</strong></p>
+                <p>Email: <strong>{{user.email}}</strong></p>
+                <p>Email Verified: <strong>{{user.emailVerified}}</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
-    </div>
+    </main>
+
   </div>
 </div>

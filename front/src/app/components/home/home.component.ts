@@ -12,21 +12,13 @@ import { FlashMessagesService } from 'angular2-flash-messages';
 })
 export class HomeComponent implements OnInit {
   appLiterals;
-  authService: AuthService
 
-  constructor(private authSrv: AuthService, private router: Router, private flashMessage: FlashMessagesService) {
+  constructor(public authService: AuthService, private router: Router, private flashMessage: FlashMessagesService) {
     this.appLiterals = appLiterals;
-    this.authService = authSrv;
   }
 
   ngOnInit() {
   }
 
-  onLogoutClick() {
-    this.authService.logout();
-    this.flashMessage.show(this.appLiterals.login.logoutConfirmationMsg, {cssClass: 'alert-success', timeout: 3000});
-    this.router.navigate(['/login']);
-    return false;
-  }
-
 }
+

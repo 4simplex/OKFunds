@@ -5,19 +5,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrandService } from './services/brand.service';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { AppRoutingModule } from './/app-routing.module';
+import { AppRoutingModule } from './routing/app-routing.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { ChartsModule } from 'ng2-charts';
 import { HomeComponent } from './components/home/home.component';
-import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { RegisterComponent } from './components/register/register.component';
 import { FlashMessagesModule } from 'angular2-flash-messages/module';
 import { ValidateService } from './services/validate.service';
-import { AuthService } from './services/auth.service';
-import { AuthGuard } from './guards/auth.guard';
 import { BrandsComponent } from './components/brands/brands.component';
 import { BrandDetailComponent } from './components/brand-detail/brand-detail.component';
 import { BrandSelectorComponent } from './components/brand-selector/brand-selector.component';
@@ -49,16 +45,27 @@ import localeEsAr from '@angular/common/locales/es-AR';
 import { ConfirmEqualValidatorDirective } from './directives/confirm-equal-validator.directive';
 import { ShowHidePasswordModule } from 'ngx-show-hide-password';
 
+// Firebase services + enviorment module
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { environment } from '../environments/environment';
+import { SignInComponent } from './components/authentication/sign-in/sign-in.component';
+import { SignUpComponent } from './components/authentication/sign-up/sign-up.component';
+import { ForgotPasswordComponent } from './components/authentication/forgot-password/forgot-password.component';
+import { VerifyEmailComponent } from './components/authentication/verify-email/verify-email.component';
+
+// Auth service
+import { AuthService } from './services/auth.service';
+
 registerLocaleData(localeEsAr, 'es-Ar');
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    LoginComponent,
     NavbarComponent,
     ProfileComponent,
-    RegisterComponent,
     BrandsComponent,
     BrandDetailComponent,
     BrandSelectorComponent,
@@ -80,7 +87,11 @@ registerLocaleData(localeEsAr, 'es-Ar');
     StatsComponent,
     ChartgraphComponent,
     NotFoundComponent,
-    ConfirmEqualValidatorDirective
+    ConfirmEqualValidatorDirective,
+    SignInComponent,
+    SignUpComponent,
+    ForgotPasswordComponent,
+    VerifyEmailComponent
   ],
 
   imports: [
@@ -97,6 +108,9 @@ registerLocaleData(localeEsAr, 'es-Ar');
     RecaptchaFormsModule,
     RecaptchaModule.forRoot(),
     ShowHidePasswordModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
   ],
 
   providers: [
@@ -106,7 +120,6 @@ registerLocaleData(localeEsAr, 'es-Ar');
     PriceService,
     ValidateService,
     AuthService,
-    AuthGuard,
     { provide: LOCALE_ID, useValue: 'es-Ar' },
     { provide: RECAPTCHA_LANGUAGE, useValue: 'es-Ar' }
   ],

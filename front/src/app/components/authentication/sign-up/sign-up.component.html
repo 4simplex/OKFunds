@@ -1,23 +1,23 @@
-<form #captchaProtectedForm="ngForm" (ngSubmit)="onRegisterSubmit()" class="form-group">
-  <div class="form-group">
+<form #captchaProtectedForm="ngForm" (ngSubmit)="authService.SignUp(userEmail.value, pwd.value)" class="form-group">
+  <!-- <div class="form-group">
     <label>{{ appLiterals.user.name }}</label>
     <input type="text" [(ngModel)]="name" name="name" class="form-control">
-  </div>
+  </div> -->
 
-  <div class="form-group">
+  <!-- <div class="form-group">
     <label>{{ appLiterals.user.username }}</label>
     <input type="text" [(ngModel)]="username" name="username" class="form-control">
-  </div>
+  </div> -->
 
   <div class="form-group">
-    <label>{{ appLiterals.user.email }}</label>
-    <input type="text" [(ngModel)]="email" name="email" class="form-control">
+    <label class="required">{{ appLiterals.user.email }}</label>
+    <input type="email" class="form-control" #userEmail required>
   </div>
 
   <div ngModelGroup="passwordGroup" appConfirmEqualValidator #passwordGroup="ngModelGroup"
     [class.has-error]="passwordGroup.errors?.notEqual && !confirmPassword.errors?.required">
     <div class="form-group" [class.has-error]="pwd.touched && pwd.invalid">
-      <label for="password" class="control-label">{{ appLiterals.user.password }}</label>
+      <label for="password" class="control-label required">{{ appLiterals.user.password }}</label>
       <show-hide-password btnStyle="info" [btnOutline]="false">
         <input name="password" required type="password" class="form-control"
           [(ngModel)]="passwordField" #pwd="ngModel">
@@ -29,7 +29,7 @@
 
     <div class="form-group" 
       [class.has-error]="confirmPassword.touched && confirmPassword.invalid">
-      <label for="confirmPassword" class="control-label">{{ appLiterals.user.confirmPassword }}</label>
+      <label for="confirmPassword" class="control-label required">{{ appLiterals.user.confirmPassword }}</label>
       <show-hide-password btnStyle="info" [btnOutline]="false">
         <input name="confirmPassword" required type="password" class="form-control" #confirmPassword="ngModel"
           [(ngModel)]="confirmPasswordField" >
@@ -55,7 +55,18 @@
     </re-captcha>
   </div>
 
-  <button type="submit" [disabled]="!captchaProtectedForm.form.valid" class="btn btn-primary">
-    {{ this.appLiterals.btnRegister }}
-  </button>
+  <div class="form-group">
+    <button type="submit" [disabled]="!captchaProtectedForm.form.valid" class="btn btn-primary">
+      {{ this.appLiterals.btnRegister }}
+    </button>
+  </div>
+
+  <!-- Continue with Google -->
+  <div class="form-group">
+    <button type="button" class="loginBtn loginBtn--google" (click)="authService.GoogleAuth()">
+      Registrarse con Google
+    </button>
+  </div>  
+
 </form>
+    
