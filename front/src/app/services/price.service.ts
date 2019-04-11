@@ -21,7 +21,7 @@ export class PriceService {
   }
 
   getPriceLst() {
-    const userId = JSON.parse(localStorage.getItem('user')).id;
+    const userId = JSON.parse(localStorage.getItem('user')).uid;
 
     return this.http.get(`${environment.priceUrl}/user/${userId}`);
   }
@@ -36,7 +36,7 @@ export class PriceService {
 
   postPrice(price: Price) {
     const user = JSON.parse(localStorage.getItem('user'));
-    price.user = user.id;
+    price.user = user.uid;
 
     return this.http.post(environment.priceUrl, price);
   }
@@ -60,17 +60,17 @@ export class PriceService {
   }
 
   getPriceByName(name): Observable<Price> {
-    const userId = JSON.parse(localStorage.getItem('user')).id;
+    const userId = JSON.parse(localStorage.getItem('user')).uid;
     return this.http.get<Price>(environment.priceUrl + `/getprice/${userId}` + `/${name}`);
   }
 
   getPriceByProvider(providerId): Observable<Price> {
-    const userId = JSON.parse(localStorage.getItem('user')).id;
+    const userId = JSON.parse(localStorage.getItem('user')).uid;
     return this.http.get<Price>(environment.priceUrl + `/getProvider/${userId}/${providerId}`);
   }
 
   getPriceByProduct(productId): Observable<Price> {
-    const userId = JSON.parse(localStorage.getItem('user')).id;
+    const userId = JSON.parse(localStorage.getItem('user')).uid;
     return this.http.get<Price>(environment.priceUrl + `/getProduct/${userId}/${productId}`);
   }
 

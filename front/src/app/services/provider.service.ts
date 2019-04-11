@@ -17,7 +17,7 @@ export class ProviderService {
   }
 
   getProviders() {
-    const userId = JSON.parse(localStorage.getItem('user')).id;
+    const userId = JSON.parse(localStorage.getItem('user')).uid;
     return this.http.get(`${environment.providerUrl}/user/${userId}`);
   }
 
@@ -30,7 +30,7 @@ export class ProviderService {
 
   postProvider(provider: Provider): Observable<Provider> {
     const user = JSON.parse(localStorage.getItem('user'));
-    provider.user = user.id;
+    provider.user = user.uid;
     return this.http.post<Provider>(environment.providerUrl, provider);
   }
 

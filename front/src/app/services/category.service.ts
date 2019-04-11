@@ -17,12 +17,12 @@ export class CategoryService {
   }
 
   getCategories() {
-    const userId = JSON.parse(localStorage.getItem('user')).id;
+    const userId = JSON.parse(localStorage.getItem('user')).uid;
     return this.http.get(`${environment.categoryUrl}/user/${userId}`);
   }
 
   getCategory(id: string): Observable<Category> {
-    const userId = JSON.parse(localStorage.getItem('user')).id;
+    const userId = JSON.parse(localStorage.getItem('user')).uid;
     const url = `${environment.categoryUrl}/${userId}/${id}`;
     return this.http.get<Category>(url).pipe(
       // tap(_ => console.info(`Fetched brand id=${id}`)),
@@ -31,13 +31,13 @@ export class CategoryService {
   }
 
   getCategoryByName(name, id): Observable<Category> {
-    const userId = JSON.parse(localStorage.getItem('user')).id;
+    const userId = JSON.parse(localStorage.getItem('user')).uid;
     return this.http.get<Category>(`${environment.categoryUrl}/${userId}/${id}/${name}`);
   }
 
   postCategory(category: Category): Observable<Category> {
     const user = JSON.parse(localStorage.getItem('user'));
-    category.user = user.id;
+    category.user = user.uid;
     return this.http.post<Category>(environment.categoryUrl, category);
   }
 
