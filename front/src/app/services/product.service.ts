@@ -14,13 +14,13 @@ export class ProductService {
   constructor(private productService: HttpClient) { }
 
   getProduct() {
-    const userId = JSON.parse(localStorage.getItem('user')).id;
+    const userId = JSON.parse(localStorage.getItem('user')).uid;
     return this.productService.get(`${environment.productUrl}/user/${userId}`);
   }
 
   postProduct(product) {
     const user = JSON.parse(localStorage.getItem('user'));
-    product.user = user.id;
+    product.user = user.uid;
 
     return this.productService.post(environment.productUrl, product);
   }
@@ -50,7 +50,7 @@ export class ProductService {
   }
 
   searchProductByName(character): Observable<Product> {
-    const userId = JSON.parse(localStorage.getItem('user')).id;
+    const userId = JSON.parse(localStorage.getItem('user')).uid;
     return this.productService.get<Product>(environment.productUrl + `/get/products/${userId}` + `/${character}`);
   }
 }

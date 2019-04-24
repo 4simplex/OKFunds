@@ -17,7 +17,7 @@ export class BrandService {
 
   /** GET brands from the server */
   getBrands(): Observable<Brand[]> {
-    const userId = JSON.parse(localStorage.getItem('user')).id;
+    const userId = JSON.parse(localStorage.getItem('user')).uid;
 
     return this.http.get<Brand[]>(`${environment.brandUrl}/user/${userId}`)
       .pipe(
@@ -27,7 +27,7 @@ export class BrandService {
   }
 
   getBrandByName(name, id): Observable<Brand> {
-    const userId = JSON.parse(localStorage.getItem('user')).id;
+    const userId = JSON.parse(localStorage.getItem('user')).uid;
     return this.http.get<Brand>(`${environment.brandUrl}/${userId}/${id}/${name}`);
   }
 
@@ -47,7 +47,7 @@ export class BrandService {
 
   /** GET brand by id. Will 404 if id not found */
   getBrand(id: string): Observable<Brand> {
-    const userId = JSON.parse(localStorage.getItem('user')).id;
+    const userId = JSON.parse(localStorage.getItem('user')).uid;
     const url = `${environment.brandUrl}/${userId}/${id}`;
     return this.http.get<Brand>(url).pipe(
       // tap(_ => console.info(`Fetched brand id=${id}`)),
@@ -72,7 +72,7 @@ export class BrandService {
   /** POST: add a new brand to the server */
   addBrand(brand: Brand): Observable<Brand> {
     const user = JSON.parse(localStorage.getItem('user'));
-    brand.user = user.id;
+    brand.user = user.uid;
 
     return this.http.post<Brand>(environment.brandUrl, brand, httpOptions).pipe(
       // tap((brand: Brand) => console.info(`Added brand w/ id=${brand._id}`)),

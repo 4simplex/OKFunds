@@ -1,8 +1,8 @@
-<form #captchaProtectedForm="ngForm" (ngSubmit)="authService.SignUp(userEmail.value, pwd.value)" class="form-group">
-  <!-- <div class="form-group">
-    <label>{{ appLiterals.user.name }}</label>
-    <input type="text" [(ngModel)]="name" name="name" class="form-control">
-  </div> -->
+<form #captchaProtectedForm="ngForm" (ngSubmit)="authService.SignUp(userEmail.value, pwd.value, displayName.value)" class="form-group">
+  <div class="form-group">
+    <label class="required">{{ appLiterals.user.name }}</label>
+    <input type="text" class="form-control" [(ngModel)]="name" name="name" #displayName required>
+  </div>
 
   <!-- <div class="form-group">
     <label>{{ appLiterals.user.username }}</label>
@@ -11,7 +11,7 @@
 
   <div class="form-group">
     <label class="required">{{ appLiterals.user.email }}</label>
-    <input type="email" class="form-control" #userEmail required>
+    <input type="email" class="form-control" [(ngModel)]="email" name="email" #userEmail required>
   </div>
 
   <div ngModelGroup="passwordGroup" appConfirmEqualValidator #passwordGroup="ngModelGroup"
@@ -45,7 +45,7 @@
     </div>
   </div>
 
-  <div class="form-group">
+  <!-- <div class="form-group">
     <re-captcha class="center-recaptcha" 
       [(ngModel)]="formModel.captcha" 
       name="captcha" 
@@ -53,7 +53,7 @@
       siteKey="6LduvpoUAAAAAEkPrFVkwVgeU8_Tzhj_Kpy4HAED" 
       #captchaControl="ngModel">
     </re-captcha>
-  </div>
+  </div> -->
 
   <div class="form-group">
     <button type="submit" [disabled]="!captchaProtectedForm.form.valid" class="btn btn-primary">

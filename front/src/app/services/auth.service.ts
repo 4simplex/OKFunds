@@ -11,6 +11,14 @@ import { Router } from '@angular/router';
 
 export class AuthService {
   userData: any; // Save logged in user data
+  userLogged: User = {
+    uid: '',
+    email: '',
+    displayName: '',
+    photoURL: '',
+    emailVerified: false,
+    premium: false
+  };
 
   constructor(
     public afs: AngularFirestore,   // Inject Firestore service
@@ -23,7 +31,14 @@ export class AuthService {
     this.afAuth.authState.subscribe(user => {
       if (user) {
         this.userData = user;
-        localStorage.setItem('user', JSON.stringify(this.userData));
+        this.userLogged.uid = user.uid;
+        this.userLogged.email = user.email;
+        this.userLogged.displayName = user.displayName;
+        this.userLogged.photoURL = user.photoURL;
+        this.userLogged.emailVerified = user.emailVerified;
+        this.userLogged.premium = true;
+
+        localStorage.setItem('user', JSON.stringify(this.userLogged));
         JSON.parse(localStorage.getItem('user'));
       } else {
         localStorage.setItem('user', null);
@@ -39,23 +54,44 @@ export class AuthService {
         this.ngZone.run(() => {
           this.router.navigate(['brands']);
         });
-        this.SetUserData(result.user);
+        // this.SetUserData(result.user);
       }).catch((error) => {
         window.alert(error.message);
       });
   }
 
   // Sign up with email/password
-  SignUp(email, password) {
+  SignUp(email, password, name) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
+        this.SetUserDisplayName(name);
+
         /* Call the SendVerificaitonMail() function when new user sign
         up and returns promise */
         this.SendVerificationMail();
-        this.SetUserData(result.user);
+        // this.SetUserData(result.user);
       }).catch((error) => {
-        window.alert(error.message);
+        let errorMessage = error.message;
+        if (error.code === 'auth/weak-password') {
+          errorMessage = 'La contraseña debe tener al menos 6 caracteres.';
+        }
+        if (error.code === 'auth/invalid-email') {
+          errorMessage = 'La dirección de correo electrónico está mal formateada.';
+        }
+        window.alert(errorMessage);
       });
+  }
+
+  SetUserDisplayName(displayName) {
+    const user = this.afAuth.auth.currentUser;
+    user.updateProfile({
+      displayName: displayName
+    }).then(function(response) {
+      // Success
+    }, function(error) {
+      // Error
+      window.alert(error);
+    });
   }
 
   // Send email verfificaiton when new user sign up
@@ -94,7 +130,7 @@ export class AuthService {
       this.ngZone.run(() => {
         this.router.navigate(['profile']);
       });
-      this.SetUserData(result.user);
+      // this.SetUserData(result.user);
     }).catch((error) => {
       window.alert(error);
     });
@@ -110,11 +146,10 @@ export class AuthService {
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
-      emailVerified: user.emailVerified
+      emailVerified: user.emailVerified,
+      premium: user.premium
     };
-    return userRef.set(userData, {
-      merge: true
-    });
+    return userRef.set(userData);
   }
 
   // Sign out
