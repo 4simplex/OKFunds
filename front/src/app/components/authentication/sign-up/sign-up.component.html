@@ -1,8 +1,8 @@
-<form #captchaProtectedForm="ngForm" (ngSubmit)="authService.SignUp(userEmail.value, pwd.value)" class="form-group">
-  <!-- <div class="form-group">
-    <label>{{ appLiterals.user.name }}</label>
-    <input type="text" [(ngModel)]="name" name="name" class="form-control">
-  </div> -->
+<form #captchaProtectedForm="ngForm" (ngSubmit)="authService.SignUp(userEmail.value, pwd.value, name.value)" class="form-group">
+  <div class="form-group">
+    <label class="required">{{ appLiterals.user.name }}</label>
+    <input type="text" class="form-control" #name required>
+  </div>
 
   <!-- <div class="form-group">
     <label>{{ appLiterals.user.username }}</label>

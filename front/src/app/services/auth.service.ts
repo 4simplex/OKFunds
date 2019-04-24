@@ -61,9 +61,12 @@ export class AuthService {
   }
 
   // Sign up with email/password
-  SignUp(email, password) {
+  SignUp(email, password, name) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
+        console.log(name);
+        this.SetUserDisplayName(name);
+
         /* Call the SendVerificaitonMail() function when new user sign
         up and returns promise */
         this.SendVerificationMail();
@@ -71,6 +74,18 @@ export class AuthService {
       }).catch((error) => {
         window.alert(error.message);
       });
+  }
+
+  SetUserDisplayName(displayName) {
+    const user = this.afAuth.auth.currentUser;
+    user.updateProfile({
+      displayName: displayName
+    }).then(function(response) {
+      // Success
+    }, function(error) {
+      // Error
+      window.alert(error);
+    });
   }
 
   // Send email verfificaiton when new user sign up
