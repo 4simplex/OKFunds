@@ -1,7 +1,7 @@
-<form #captchaProtectedForm="ngForm" (ngSubmit)="authService.SignUp(userEmail.value, pwd.value, name.value)" class="form-group">
+<form #captchaProtectedForm="ngForm" (ngSubmit)="authService.SignUp(userEmail.value, pwd.value, displayName.value)" class="form-group">
   <div class="form-group">
     <label class="required">{{ appLiterals.user.name }}</label>
-    <input type="text" class="form-control" #name required>
+    <input type="text" class="form-control" [(ngModel)]="name" name="name" #displayName required>
   </div>
 
   <!-- <div class="form-group">
@@ -11,7 +11,7 @@
 
   <div class="form-group">
     <label class="required">{{ appLiterals.user.email }}</label>
-    <input type="email" class="form-control" #userEmail required>
+    <input type="email" class="form-control" [(ngModel)]="email" name="email" #userEmail required>
   </div>
 
   <div ngModelGroup="passwordGroup" appConfirmEqualValidator #passwordGroup="ngModelGroup"

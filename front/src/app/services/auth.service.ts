@@ -64,7 +64,6 @@ export class AuthService {
   SignUp(email, password, name) {
     return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
       .then((result) => {
-        console.log(name);
         this.SetUserDisplayName(name);
 
         /* Call the SendVerificaitonMail() function when new user sign
@@ -72,7 +71,14 @@ export class AuthService {
         this.SendVerificationMail();
         // this.SetUserData(result.user);
       }).catch((error) => {
-        window.alert(error.message);
+        let errorMessage = error.message;
+        if (error.code === 'auth/weak-password') {
+          errorMessage = 'La contraseña debe tener al menos 6 caracteres.';
+        }
+        if (error.code === 'auth/invalid-email') {
+          errorMessage = 'La dirección de correo electrónico está mal formateada.';
+        }
+        window.alert(errorMessage);
       });
   }
 

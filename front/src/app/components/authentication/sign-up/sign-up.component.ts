@@ -14,6 +14,8 @@ export interface FormModel {
 
 export class SignUpComponent implements OnInit {
   formModel: FormModel = {};
+  name: String;
+  email: String;
   passwordField: String;
   confirmPasswordField: String;
   appLiterals;
