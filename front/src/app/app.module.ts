@@ -57,6 +57,8 @@ import { VerifyEmailComponent } from './components/authentication/verify-email/v
 
 // Auth service
 import { AuthService } from './services/auth.service';
+import { SubscriptionComponent } from './components/subscription/subscription.component';
+import { ChangeCardComponent } from './components/change-card/change-card.component';
 
 registerLocaleData(localeEsAr, 'es-Ar');
 
@@ -91,7 +93,9 @@ registerLocaleData(localeEsAr, 'es-Ar');
     SignInComponent,
     SignUpComponent,
     ForgotPasswordComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
+    SubscriptionComponent,
+    ChangeCardComponent
   ],
 
   imports: [

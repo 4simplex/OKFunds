@@ -19,10 +19,12 @@
   },
   "homepage": "https://github.com/4simplex/okf#readme",
   "dependencies": {
-    "express": "*",
-    "mongoose": "*",
+    "body-parser": "*",
     "cors": "*",
-    "body-parser": "*"
+    "express": "*",
+    "mercadopago": "^1.0.23",
+    "mongoose": "*",
+    "node-fetch": "^2.3.0"
   },
   "devDependencies": {
     "eslint": "^5.15.2",

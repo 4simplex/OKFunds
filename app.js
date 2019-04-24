@@ -32,6 +32,7 @@ app.use('/api/category', require('./routes/category.routes'));
 app.use('/api/provider', require('./routes/provider.routes'));
 app.use('/api/price', require('./routes/price.routes'));
 app.use('/api/sale', require('./routes/sale.routes'));
+app.use('/api/mp', require('./routes/mp.routes'));
 
 // Index Route
 app.get('/', (req, res) => {
