@@ -58,6 +58,9 @@ import { VerifyEmailComponent } from './components/authentication/verify-email/v
 // Auth service
 import { AuthService } from './services/auth.service';
 
+// Import ngx-barcode module
+import { NgxBarcodeModule } from 'ngx-barcode';
+
 registerLocaleData(localeEsAr, 'es-Ar');
 
 @NgModule({
@@ -111,6 +114,7 @@ registerLocaleData(localeEsAr, 'es-Ar');
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    NgxBarcodeModule
   ],
 
   providers: [
