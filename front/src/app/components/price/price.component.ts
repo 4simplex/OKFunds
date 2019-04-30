@@ -29,6 +29,8 @@ export class PriceComponent implements OnInit {
   loading: boolean;
   loadingSearch: boolean;
   emptyPriceList: boolean;
+  pricesToPrint: Price[];
+  printSectionEnabled = false;
 
   constructor(
     private fb: FormBuilder,
@@ -155,6 +157,25 @@ export class PriceComponent implements OnInit {
           this.searchResult = res;
         });
     }
+  }
+
+  public sendCheckedPrices(): void {
+    this.pricesToPrint = this.priceService.prices.filter( (price) => price.checked );
+
+    if (this.pricesToPrint.length === 0) {
+      alert('Debe seleccionar los productos que desea imprimir.');
+      return;
+    }
+
+    this.printSectionEnabled = true;
+  }
+
+  cancelPrint() {
+    this.printSectionEnabled = false;
+  }
+
+  onPrint() {
+    window.print();
   }
 
 }
