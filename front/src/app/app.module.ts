@@ -60,6 +60,9 @@ import { AuthService } from './services/auth.service';
 import { SubscriptionComponent } from './components/subscription/subscription.component';
 import { ChangeCardComponent } from './components/change-card/change-card.component';
 
+// Import ngx-barcode module
+import { NgxBarcodeModule } from 'ngx-barcode';
+
 registerLocaleData(localeEsAr, 'es-Ar');
 
 @NgModule({
@@ -115,6 +118,7 @@ registerLocaleData(localeEsAr, 'es-Ar');
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
+    NgxBarcodeModule
   ],
 
   providers: [

@@ -29,4 +29,5 @@ export class Price {
     priceForUnits: number;
     user: string;
     createdDate: Date;
+    checked?: boolean;
 }

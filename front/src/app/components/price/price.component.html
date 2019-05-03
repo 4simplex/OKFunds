@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container"  *ngIf="!printSectionEnabled">
   <div class="row mb-3">
     <div class="col-md-12">
       <h2>Precios</h2>
@@ -40,7 +40,7 @@
 
           <div class="form-group" *ngIf="prodCode">
             <label for="productCode">Código de producto</label>
-            <p>{{ prodCode }}</p>
+            <ngx-barcode [bc-value]="prodCode" [bc-display-value]="true"></ngx-barcode>
           </div>
 
           <div class="form-group">
@@ -64,7 +64,10 @@
     <div class="col-md-12">
       <div class="row mb-3 mt-2">
         <div class="col-md-12">
-          <h5>Precios registrados</h5>
+          <h5>Precios registrados
+            <button type="button" (click)="sendCheckedPrices()" 
+              *ngIf="!emptyPriceList" class="btn btn-primary float-right">Imprimir códigos</button>
+          </h5>
         </div>
       </div>
       <div class="col-md-12" style="text-align: center; padding-top: 15px;" *ngIf="loading">
@@ -74,23 +77,31 @@
       <div class="col-md-12" style="text-align: center; padding-top: 15px;" *ngIf="emptyPriceList">
         <label>{{ appLiterals.price.emptyPriceList }}</label>
       </div>
-      <div class="row align-items-center price-row" *ngFor="let price of priceService.prices | paginate: {itemsPerPage:10, currentPage: currentPage}">
-        <div class="col-md-1">
+      <div class="row align-items-center price-row" *ngFor="let price of priceService.prices | paginate: {itemsPerPage:50, currentPage: currentPage}; let i = index">
+        <div class="col-md-1">            
           <div *ngIf="price.productForm.product.fileImg">
             <img [src]="'data:image/jpg;base64,'+price.productForm.product.fileImg" class="img-fluid" />
           </div>
           <div *ngIf="!price.productForm.product.fileImg">
             <img [src]="'data:image/jpg;base64,'+noImage" class="img-fluid" />
-          </div>
+          </div>          
         </div>
 
-        <div class="col-md-5">
+        <div class="col-md-3">
           <h4><strong>{{ price.productForm.product.brand.name }}</strong> - {{ price.productForm.product.name }}</h4>
           <p>
             <strong>Marca</strong> {{ price.productForm.product.brand.name }}
             <strong>Proveedor</strong> {{ price.provider.name }}
             <strong>Categoría</strong> {{ price.productForm.product.category.name }}
-            <strong>Código</strong> {{ price.productCode }}
+          </p>
+        </div>
+        <div class="col-md-2">
+          <p><strong>Código de Producto</strong><br>
+            <ngx-barcode [bc-value]="price.productCode" 
+              [bc-display-value]="true"
+              [bc-height]="40"
+              [bc-width]="1">
+            </ngx-barcode>
           </p>
         </div>
 
@@ -109,6 +120,10 @@
           <button (click)="deletePrice(price)" class="btn btn-danger">Eliminar</button>
         </div>
 
+        <div>
+          <input type="checkbox" name="price{{price._id}}" [(ngModel)]="priceService.prices[i].checked">
+        </div>
+
       </div>
       <div class="row">
         <pagination-controls (pageChange)="currentPage = $event" autoHide="true" responsive="true" previousLabel="Previa" nextLabel="Próxima"
@@ -116,5 +131,33 @@
       </div>
     </div>
   </div>
+</div>
 
+<div class="container" *ngIf="printSectionEnabled">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row mb-3 mt-2">
+        <div class="col-md-12">
+          <h5 class="printTitle">Precios a imprimir
+            <button (click)="cancelPrint()" class="btn btn-secondary ml-1 float-right">Volver</button>
+            <button (click)="onPrint()" class="btn btn-primary float-right">Imprimir</button>           
+          </h5>
+        </div>
+      </div>
+      <div>
+        <div class="col-md-6 row align-items-center price-row float-left" *ngFor="let price of this.pricesToPrint">
+          <div class="col-md-5 printMe">
+            <strong class="printMe">{{ price.productForm.product.brand.name }}</strong> <br> {{ price.productForm.product.name }}
+          </div>
+          <div>
+            <ngx-barcode [bc-value]="price.productCode" 
+              [bc-display-value]="true"
+              [bc-height]="40"
+              [bc-width]="2">
+            </ngx-barcode>
+          </div>
+        </div>       
+      </div>      
+    </div>    
+  </div>
 </div>
