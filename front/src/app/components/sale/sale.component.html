@@ -48,7 +48,7 @@
       </div>
     </div>
     <div class="col-md-7">
-      <h5 style="margin-top:10px; margin-bottom:20px;">{{ appLiterals.sales.productsAddedTitle }}:</h5>
+      <h5 style="margin-top:10px; margin-bottom:20px;" *ngIf="products.length > 0">{{ appLiterals.sales.productsAddedTitle }}:</h5>
       <div class="row">
         <div class="col-md-12">
           <div class="row" *ngFor="let product of products">
@@ -79,8 +79,14 @@
             </div>
           </div>
         </div>
+        
         <div class="col-md-12 mt-5" *ngIf="products.length > 0">
+          <button type="button" id="btnDiscount" class="btn btn-warning btn-sm float-right ml-2" (click)="modifySaleTotal()">Aplicar descuento</button>
+          <input type="text" style="width: 50px" class="float-right ml-2" [(ngModel)]="this.discount"/>
+          <label class="float-right">Descontar monto:</label> 
+        </div>
 
+        <div class="col-md-12 mt-3" *ngIf="products.length > 0">
           <h4 class="text-right">{{ appLiterals.labelTotal }}: {{this.total | currency:'ARS':'code'}}</h4>
           <button type="button" class="btn btn-primary float-right" (click)="sell()">{{ appLiterals.sales.btnSell }}</button>
           <button class="btn btn-default float-right mr-3" (click)="cancelSell()">{{ appLiterals.btnCancel }}</button>

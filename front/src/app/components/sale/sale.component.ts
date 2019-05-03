@@ -6,6 +6,7 @@ import { Sale } from 'src/app/models/sale-model';
 import { RemoveWhiteSpaces } from '../../helpers/customValidators';
 import { appLiterals } from '../../resources/appLiteral';
 import { getNoImage } from '../../../assets/noimage';
+import { ValidateService } from './../../services/validate.service';
 
 @Component({
   selector: 'app-sale',
@@ -15,7 +16,8 @@ import { getNoImage } from '../../../assets/noimage';
 export class SaleComponent implements OnInit {
   units = 1;
   products = [];
-  total;
+  total: number;
+  discount = 0;
   sale: Sale;
   prices;
   priceFound;
@@ -26,7 +28,8 @@ export class SaleComponent implements OnInit {
 
   constructor(
     private priceService: PriceService,
-    private saleService: SaleService) {
+    private saleService: SaleService,
+    private validateService: ValidateService) {
       this.appLiterals = appLiterals;
     }
 
@@ -130,12 +133,35 @@ export class SaleComponent implements OnInit {
     }
   }
 
+  modifySaleTotal() {
+    if (!this.validateService.validatePositiveDecimalNumbers(this.discount)) {
+      alert('Debe ingresar un monto válido.');
+      return;
+    }
+
+    const btnDiscount = document.getElementById('btnDiscount');
+
+    if (btnDiscount.innerText === 'Aplicar descuento') {
+      if (this.discount >= this.total) {
+        alert('Ingrese una cantidad menor al total de la venta.');
+        return;
+      }
+
+      this.total = this.total - this.discount;
+      btnDiscount.innerText  = 'Deshacer descuento';
+    } else {
+      this.totalAmount();
+      this.discount = 0;
+      btnDiscount.innerText  = 'Aplicar descuento';
+    }
+  }
+
   totalAmount() {
-    const total =
-      this.products.map(item => item.priceForUnits)
-        .reduce((acc, currentValue) => {
-          return acc + currentValue;
-        }, 0);
+    const total = this.products.map(item => item.priceForUnits)
+      .reduce((acc, currentValue) => {
+        return acc + currentValue;
+      }, 0);
+
     this.total = total;
   }
 
@@ -165,7 +191,7 @@ export class SaleComponent implements OnInit {
         return product;
       });
 
-      this.saleService.postSale(this.sale).subscribe(res => {
+      this.saleService.postSale(this.sale).subscribe(() => {
         alert(this.appLiterals.sales.soldMsg);
         this.products = [];
       });

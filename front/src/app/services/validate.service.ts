@@ -49,4 +49,20 @@ export class ValidateService {
 
     return true;
   }
+
+  validatePositiveDecimalNumbers(inputText) {
+    if (!inputText) {
+      return false;
+    }
+
+    if (isNaN(Number(inputText))) {
+      return false;
+    }
+
+    if (Number(inputText) < 0) {
+      return false;
+    }
+
+    return true;
+  }
 }
