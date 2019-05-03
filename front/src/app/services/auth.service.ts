@@ -4,6 +4,7 @@ import { auth } from 'firebase/app';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestore, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Router } from '@angular/router';
+import {UserService} from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,34 +18,58 @@ export class AuthService {
     displayName: '',
     photoURL: '',
     emailVerified: false,
-    premium: false
+    premium: false,
+    subscription: '',
+    customer: ''
   };
 
   constructor(
     public afs: AngularFirestore,   // Inject Firestore service
     public afAuth: AngularFireAuth, // Inject Firebase auth service
     public router: Router,
-    public ngZone: NgZone // NgZone service to remove outside scope warning
+    public ngZone: NgZone, // NgZone service to remove outside scope warning
+    private userService: UserService
   ) {
     /* Saving user data in localstorage when
     logged in and setting up null when logged out */
     this.afAuth.authState.subscribe(user => {
       if (user) {
-        this.userData = user;
-        this.userLogged.uid = user.uid;
-        this.userLogged.email = user.email;
-        this.userLogged.displayName = user.displayName;
-        this.userLogged.photoURL = user.photoURL;
-        this.userLogged.emailVerified = user.emailVerified;
-        this.userLogged.premium = true;
+            this.userData = user;
+            this.userLogged.uid = user.uid;
+            this.userLogged.email = user.email;
+            this.userLogged.displayName = user.displayName;
+            this.userLogged.photoURL = user.photoURL;
+            this.userLogged.emailVerified = user.emailVerified;
+            this.userLogged.premium = false;
+            this.userLogged.subscription = '';
+            this.userLogged.customer = '';
 
-        localStorage.setItem('user', JSON.stringify(this.userLogged));
-        JSON.parse(localStorage.getItem('user'));
+            localStorage.setItem('user', JSON.stringify(this.userLogged));
+            JSON.parse(localStorage.getItem('user'));
+            
+            const userUpdate = JSON.parse(localStorage.getItem('user'));
+            
+            if(userUpdate){
+              this.userService.getUserData(userUpdate.uid)
+              .subscribe(result => {
+                if(result["user"] != null) {
+                  userUpdate.premium = result['user'].premium;
+                  userUpdate.subscription = result['user'].suscription;
+                  userUpdate.customer = result['user'].customer;
+
+                  localStorage.setItem('user', JSON.stringify(userUpdate));
+                  JSON.parse(localStorage.getItem('user'));
+                }
+              })
+            }
       } else {
         localStorage.setItem('user', null);
         JSON.parse(localStorage.getItem('user'));
       }
     });
+    
+    
+    
   }
 
   // Sign in with email/password
@@ -70,7 +95,15 @@ export class AuthService {
         up and returns promise */
         this.SendVerificationMail();
         // this.SetUserData(result.user);
-      }).catch((error) => {
+        return result;
+        //registrar en bd///////////////////////////////////////////
+      })
+      .then((result) => {
+        this.userService.createNewUser(result.user.uid)
+        .subscribe((response) => {
+        })
+      })
+      .catch((error) => {
         let errorMessage = error.message;
         if (error.code === 'auth/weak-password') {
           errorMessage = 'La contraseña debe tener al menos 6 caracteres.';
@@ -115,6 +148,7 @@ export class AuthService {
   // Returns true when user is looged in and email is verified
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('user'));
+    
     return (user !== null && user.emailVerified !== false) ? true : false;
   }
 
@@ -130,6 +164,7 @@ export class AuthService {
       this.ngZone.run(() => {
         this.router.navigate(['profile']);
       });
+      console.log(result);
       // this.SetUserData(result.user);
     }).catch((error) => {
       window.alert(error);
@@ -147,7 +182,9 @@ export class AuthService {
       displayName: user.displayName,
       photoURL: user.photoURL,
       emailVerified: user.emailVerified,
-      premium: user.premium
+      premium: user.premium,
+      subscription: user.subscription,
+      customer: user.customer
     };
     return userRef.set(userData);
   }
