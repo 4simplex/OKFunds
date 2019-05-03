@@ -5,4 +5,6 @@ export interface User {
     photoURL: string;
     emailVerified: boolean;
     premium: boolean;
+    subscription: string;
+    customer: string;
  }

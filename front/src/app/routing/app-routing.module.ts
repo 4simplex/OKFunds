@@ -20,6 +20,9 @@ import { SignInComponent } from '../components/authentication/sign-in/sign-in.co
 import { SignUpComponent } from '../components/authentication/sign-up/sign-up.component';
 import { ForgotPasswordComponent } from '../components/authentication/forgot-password/forgot-password.component';
 import { VerifyEmailComponent } from '../components/authentication/verify-email/verify-email.component';
+import { SubscriptionComponent } from '../components/subscription/subscription.component';
+import { ChangeCardComponent } from '../components/change-card/change-card.component';
+
 
 // Import canActivate guard services
 import { AuthGuard } from '../guards/auth.guard';
@@ -41,6 +44,8 @@ const routes: Routes = [
   { path: 'stock', component: StockComponent, canActivate: [AuthGuard] },
   { path: 'sale', component: SaleComponent, canActivate: [AuthGuard] },
   { path: 'stats', component: StatsComponent, canActivate: [AuthGuard] },
+  { path: 'subscription', component: SubscriptionComponent, canActivate: [AuthGuard] },
+  { path: 'profile/changecard', component: ChangeCardComponent, canActivate: [AuthGuard] },
   { path: 'sign-in', component: SignInComponent, canActivate: [SecureInnerPagesGuard]},
   { path: 'register-user', component: SignUpComponent, canActivate: [SecureInnerPagesGuard]},
   { path: 'forgot-password', component: ForgotPasswordComponent, canActivate: [SecureInnerPagesGuard] },

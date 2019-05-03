@@ -33,6 +33,9 @@
       <li class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
         <a class="nav-link" [routerLink]="['/profile']">{{ this.appLiterals.menu.profile }}</a>
       </li>
+      <li *ngIf="!premium" class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
+        <a class="nav-link" [routerLink]="['/subscription']">Suscripción</a>
+      </li>
       <li *ngIf="!authService.isLoggedIn" class="nav-item" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact: true}">
         <a class="nav-link" [routerLink]="['/sign-in']">{{ this.appLiterals.menu.login }}</a>
       </li>
